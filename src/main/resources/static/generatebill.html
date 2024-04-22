@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generate Bill</title>
+</head>
+<body>
+<h1>Generate Bill</h1>
+<form id="billForm">
+    <div>
+        <label for="meterNumber">Meter Number:</label>
+        <input type="text" id="meterNumber" name="meterNumber" required>
+    </div>
+    <div>
+        <label for="month">Month:</label>
+        <input type="text" id="month" name="month" required>
+    </div>
+    <div>
+        <label for="unitsConsumed">Units Consumed:</label>
+        <input type="number" id="unitsConsumed" name="unitsConsumed" required>
+    </div>
+    <button type="submit">Generate Bill</button>
+</form>
+
+<script>
+    document.getElementById("billForm").addEventListener("submit", function(event) {
+        event.preventDefault(); // Prevent form submission
+
+        // Get form data
+        const meterNumber = document.getElementById("meterNumber").value;
+        const month = document.getElementById("month").value;
+        const unitsConsumed = document.getElementById("unitsConsumed").value;
+
+        // Send POST request using Fetch API
+        fetch(`/api/bills/generate?meterNumber=${meterNumber}&month=${month}&unitsConsumed=${unitsConsumed}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to generate bill');
+                }
+                else {
+                    alert("Bill generated successfully");
+                }
+            })
+            .catch(error => {
+                console.error('Failed to generate bill:', error.message); // Log error
+                alert('Failed to generate bill. Please try again later.'); // Show error message
+            });
+    });
+</script>
+</body>
+</html>

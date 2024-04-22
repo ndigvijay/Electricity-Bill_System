@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login</title>
+</head>
+<body>
+    <h1>Admin Login</h1>
+
+    <form id="adminLoginForm">
+        <label for="adminUsername">Username:</label>
+        <input type="text" id="adminUsername" name="adminUsername" required><br><br>
+
+        <label for="adminPassword">Password:</label>
+        <input type="password" id="adminPassword" name="adminPassword" required><br><br>
+
+        <button type="submit">Login</button>
+    </form>
+
+    <script >
+        document.addEventListener('DOMContentLoaded', function() {
+    var adminLoginForm = document.getElementById('adminLoginForm');
+    adminLoginForm.addEventListener('submit', function(event) {
+        event.preventDefault(); // Prevent default form submission
+        
+        // Get form data
+        var formData = {
+            username: document.getElementById('adminUsername').value,
+            password: document.getElementById('adminPassword').value
+        };
+        
+        // Send POST request using Fetch API
+        fetch('http://localhost:8181/admin/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(formData)
+        })
+        .then(function(response) {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(function(data) {
+            // Handle successful response
+            console.log(data);
+            alert("hey there admin")
+            window.location.href="/admin/generatebill"
+            // You can process the response here
+        })
+        .catch(function(error) {
+            // Handle error
+            console.error('There was a problem with the fetch operation:', error.message);
+            // You can display an error message or take appropriate action
+        });
+    });
+});
+
+    </script>
+</body>
+</html>
